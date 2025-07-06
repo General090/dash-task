@@ -7,7 +7,7 @@ const SuccessPage = ({ switchToLoginTab, handleSwitchToLoginTab }) => {
   const navigate = useNavigate();
 
   const handleHomeAndLogin = ({ switchToLoginTab }) => {
-    navigate("/login");
+    navigate("/?tab=login");
     // switchToLoginTab();
     handleSwitchToLoginTab();
   };

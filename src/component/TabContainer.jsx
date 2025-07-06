@@ -1,31 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Tab from "./Tab";
 import TabContent from "./TabContent";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
-
 import CloseIcon from "@mui/icons-material/Close";
 
 const TabContainer = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab");
+
+  const [activeTab, setActiveTab] = useState(tabParam === "login" ? 1 : 0);
   const [currentStep, setCurrentStep] = useState(1);
-  const [pendingLoginTabSwitch, setPendingLoginTabSwitch] = useState(false);
+  const navigate = useNavigate();
 
   const handleSwitchToLoginTab = () => {
-    setPendingLoginTabSwitch(true);
-    console.log('Working');
+    setSearchParams({ tab: "login" });
+  };
+
+  const handleTabClick = (index) => {
+    const tabName = index === 0 ? "register" : "login";
+    setActiveTab(index);
+    setSearchParams({ tab: tabName });
   };
 
   const handleNextStep = () => {
     setCurrentStep((prevStep) => prevStep + 1);
   };
 
+  // Sync activeTab when URL changes
   useEffect(() => {
-    if (pendingLoginTabSwitch) {
-      setActiveTab(1); // Assuming the second tab (index 1) is the login tab
-      setPendingLoginTabSwitch(false); // Reset the pending state
-    }
-  }, [pendingLoginTabSwitch]);
+    const tab = searchParams.get("tab");
+    setActiveTab(tab === "login" ? 1 : 0);
+  }, [searchParams]);
 
   const tabData = [
     {
@@ -34,9 +41,9 @@ const TabContainer = () => {
         <SignUpForm
           switchToLoginTab={handleSwitchToLoginTab}
           switchToNextStep={handleNextStep}
-          currentStep={currentStep} // Pass currentStep to SignUpForm
-          setCurrentStep={setCurrentStep} // Pass setCurrentStep to SignUpForm
-          setActiveTab={setActiveTab} // Pass setActiveTab to SignUpForm
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+          setActiveTab={setActiveTab}
         />
       ),
     },
@@ -54,7 +61,7 @@ const TabContainer = () => {
                   key={index}
                   label={tab.label}
                   isActive={index === activeTab}
-                  onClick={() => setActiveTab(index)}
+                  onClick={() => handleTabClick(index)}
                 />
               ))}
             </div>
@@ -62,17 +69,24 @@ const TabContainer = () => {
             <h2 className="flex logoText font-[700] items-center">
               {currentStep === 2 ? (
                 <>
-                  Personal Details <span className="ml-8 text-sm logoText text-[#6BC62D] font-[600]">2 of 3</span>
+                  Personal Details{" "}
+                  <span className="ml-8 text-sm logoText text-[#6BC62D] font-[600]">
+                    2 of 3
+                  </span>
                 </>
               ) : (
                 <>
-                Add Address <span className="ml-8 text-sm logoText text-[#6BC62D] font-[600]">3 of 3</span>
-              </>
+                  Add Address{" "}
+                  <span className="ml-8 text-sm logoText text-[#6BC62D] font-[600]">
+                    3 of 3
+                  </span>
+                </>
               )}
             </h2>
           )}
-          <CloseIcon />
+          <CloseIcon onClick={() => navigate("/")} className="cursor-pointer" />
         </div>
+
         <div className="tab-content-list">
           {tabData.map((tab, index) => (
             <TabContent key={index} isActive={index === activeTab}>
@@ -84,4 +98,5 @@ const TabContainer = () => {
     </div>
   );
 };
+
 export default TabContainer;
