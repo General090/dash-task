@@ -13,7 +13,7 @@ import Table from "../component/Table"
 
 const MainContent = () => {
   return (
-    <div className="my-4 px-[10px]  md:px-[40px] lg:px-[50px] w-full  ">
+    <div className="my-4 px-[10px]  md:px-[40px] lg:px-[50px] w-full">
       <div className=" md:flex w-full lg:flex gap-[10px] items-center  bg-white rounded-[30px] p-3 px-1 md:px-0  lg:px-0">
         <div className="flex items-center  gap-7 md:gap-2 lg:gap-4  lg:border-r-2  sm p-3 pr-[10px] md:pr-[10px] lg:pr-[50px] ">
           <div className="img rounded-[100px]  p-5  bg-slate-500">

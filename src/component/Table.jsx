@@ -13,7 +13,7 @@ const customers = [
 
 const CustomerTable = () => {
   return (
-    <div className="p-4">
+    <div className="py-4">
     <h1 className="text-xl font-bold mb-4">All Customers</h1>
     <div className="overflow-x-auto overflow-y-auto max-h-[600px] lg:max-h-[400px]">
       <table className="w-full  bg-white border border-gray-200">
