@@ -1,0 +1,171 @@
+  return (
+    <div>
+      {step === 1 && (
+        <Steps 
+          title="User Details"
+          fields={[
+            {
+              label: 'Email',
+              name: 'email',
+              type: 'email',
+              placeholder: 'Enter your email',
+            },
+            {
+              label: 'Password',
+              name: 'password',
+              type: 'password',
+              placeholder: 'Enter your password',
+            },
+          ]}
+          formData={formData}
+          handleChange={handleChange}
+          buttonText="Next"
+          handleButtonClick={handleNextStep}
+        />
+      )}
+      {step === 2 && (
+        <Steps 
+          title="Continuous Details"
+          fields={[
+            {
+              label: 'Full Name',
+              name: 'fullName',
+              type: 'text',
+              placeholder: 'Enter your full name',
+            },
+            {
+              label: 'Gender',
+              name: 'gender',
+              type: 'radio',
+              placeholder: 'Enter your gender',
+            },
+            {
+              label: 'Phone',
+              name: 'phone',
+              type: 'number',
+              placeholder: 'Phone number',
+            },
+            {
+              label: 'Birthday',
+              name: 'date',
+              type: 'date',
+              placeholder: 'Birthday',
+            }
+          ]}
+          formData={formData}
+          handleChange={handleChange}
+          buttonText="Save Information"
+          handleButtonClick={handleNextStep}
+        />
+      )}
+      {step === 3 && (
+        <div>
+          <h2>Location Details</h2>
+          {!showAdditionalFields ? (
+            <>
+              <div>
+                <label>Search Location</label>
+                <input
+                  type="text"
+                  name="searchLocation"
+                  placeholder="Search for location"
+                  onChange={handleChange}
+                />
+              </div>
+              <button onClick={handleUseCurrentLocation}>Use Current Location</button>
+              <button onClick={handleAddManually}>Add Manually</button>
+            </>
+          ) : (
+            <Steps 
+              title="Enter Address Manually"
+              fields={[]}
+              additionalFields={[
+                {
+                  label: 'Street',
+                  name: 'street',
+                  type: 'text',
+                  placeholder: 'Enter your address',
+                },
+                {
+                  label: 'Apartment',
+                  name: 'apartment',
+                  type: 'text',
+                  placeholder: 'Enter your apartment',
+                },
+                {
+                  label: 'City',
+                  name: 'city',
+                  type: 'text',
+                  placeholder: 'Enter your city',
+                },
+                {
+                  label: 'State',
+                  name: 'state',
+                  type: 'text',
+                  placeholder: 'Enter your state',
+                },
+                {
+                  label: 'Zip Code',
+                  name: 'zip',
+                  type: 'text',
+                  placeholder: 'Enter your zip code',
+                },
+               
+              ]}
+              formData={formData}
+              handleChange={handleChange}
+              buttonText="Submit"
+              handleButtonClick={handleSubmit}
+              showAdditionalFields={showAdditionalFields}
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+
+
+  const [showAdditionalFields, setShowAdditionalFields] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    fullName: '',
+    gender: '',
+    phone: '',
+    date: '', 
+    address: '',
+    apartment: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
+  });
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setFormData(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleNextStep = () => setStep(step + 1);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = () => {
+    alert('Form submitted successfully');
+    console.log(formData);
+  };
+
+  const handleAddManually = () => {
+    setShowAdditionalFields(true);
+  };
+
+  const handleUseCurrentLocation = () => {
+    // Handle current location logic here
+    alert('Using current location');
+  };
